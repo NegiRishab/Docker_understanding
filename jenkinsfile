@@ -27,7 +27,7 @@ pipeline {
             when {
                 expression {
                     // Add your condition here, for example:
-                    BRANCH_NAME == 'main'
+                    env.BRANCH_NAME == 'main'
                 }
             }
             steps {
@@ -51,6 +51,7 @@ pipeline {
         }
         failure {
             echo 'This will run only if the pipeline fails.'
+            echo "the error message is: ${currentBuild.currentResult}"
             // Add any failure notification commands here
         }
     }
