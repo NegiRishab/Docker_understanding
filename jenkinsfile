@@ -1,11 +1,20 @@
 pipeline {
     agent any
+    environment {
+       NEW_VERSION = "1.0.0" // Example environment variable
+       GITHUB_CREDENTIALS = credentials('git-hub') // Example of using Jenkins credentials
+    }
+    parameters {
+        string(name: 'NEW_TAG', defaultValue: '', description: 'The new tag to use in the build')
+        choice(name: 'DEPLOY_ENV', choices: ['dev', 'staging', 'production'], description: 'Select the deployment environment')
+    }
 
     stages {
         stage('Build') {
             steps {
                 echo 'Building...'
                 // Add your build commands here
+                echo "Using version: ${NEW_VERSION}"
             }
         }
         stage('Test') {
@@ -15,10 +24,34 @@ pipeline {
             }
         }
         stage('Deploy') {
+            when {
+                expression {
+                    // Add your condition here, for example:
+                    BRANCH_NAME == 'main'
+                }
+            }
             steps {
                 echo 'Deploying...'
                 // Add your deploy commands here
+                withCredentials([usernamePassword(credentialsId: 'git-hub', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                    // Use GIT_USERNAME and GIT_PASSWORD for authentication
+                    echo "Deploying with GitHub credentials: ${GIT_USERNAME}"
+                }
             }
+        }
+    }
+    post {
+        always {
+            echo 'This will always run after the stages.'
+            // Add any cleanup or notification commands here
+        }
+        success {
+            echo 'This will run only if the pipeline succeeds.'
+            // Add any success notification commands here
+        }
+        failure {
+            echo 'This will run only if the pipeline fails.'
+            // Add any failure notification commands here
         }
     }
 }
