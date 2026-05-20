@@ -13,17 +13,23 @@ pipeline {
         }
         stage('Build') {
             steps {
-                gv.build() 
+               script {
+                   gv.build()
+               }
             }
         }
         stage('build image') {
             steps {
-                gv.buildImage() 
+                script {
+                    gv.buildImage()
+                }
             }
         }
         stage('Test') {
             steps {
-               gv.test() 
+               script {
+                   gv.test()
+               }
             }
         }
         stage('Deploy') {
@@ -33,7 +39,9 @@ pipeline {
                 }
             }
             steps {
-                gv.deploy() 
+                script {
+                    gv.deploy()
+                }
             }
             }
         }
