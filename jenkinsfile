@@ -1,45 +1,42 @@
+def gv 
+
 pipeline {
     agent any
-    environment {
-       NEW_VERSION = "1.0.0" // Example environment variable
-       GITHUB_CREDENTIALS = credentials('git-hub') // Example of using Jenkins credentials
-    }
-    parameters {
-        string(name: 'NEW_TAG', defaultValue: '', description: 'The new tag to use in the build')
-        choice(name: 'DEPLOY_ENV', choices: ['dev', 'staging', 'production'], description: 'Select the deployment environment')
-    }
-
+  
     stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    gv = load 'script.groovy'
+                }
+            }
+        }
         stage('Build') {
             steps {
-                echo 'Building...'
-                // Add your build commands here
-                echo "Using version: ${NEW_VERSION}"
+                gv.build() 
+            }
+        }
+        stage('build image') {
+            steps {
+                gv.buildImage() 
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing...'
-                // Add your test commands here
+               gv.test() 
             }
         }
         stage('Deploy') {
             when {
                 expression {
-                    // Add your condition here, for example:
-                    env.BRANCH_NAME == 'main'
+                    echo "Branch name is: ${env.BRANCH_NAME}"
                 }
             }
             steps {
-                echo 'Deploying...'
-                // Add your deploy commands here
-                withCredentials([usernamePassword(credentialsId: 'git-hub', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-                    // Use GIT_USERNAME and GIT_PASSWORD for authentication
-                    echo "Deploying with GitHub credentials: ${GIT_USERNAME}"
-                }
+                gv.deploy() 
+            }
             }
         }
-    }
     post {
         always {
             echo 'This will always run after the stages.'
