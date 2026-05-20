@@ -18,13 +18,6 @@ pipeline {
                }
             }
         }
-        stage('build image') {
-            steps {
-                script {
-                    gv.buildImage()
-                }
-            }
-        }
         stage('Test') {
             steps {
                script {
@@ -32,12 +25,20 @@ pipeline {
                }
             }
         }
-        stage('Deploy') {
+        stage('build image') {
             when {
                 expression {
                     echo "Branch name is: ${env.BRANCH_NAME}"
+                    return env.BRANCH_NAME == 'main'
                 }
             }
+            steps {
+                script {
+                    gv.buildImage()
+                }
+            }
+        }
+        stage('Deploy') {
             steps {
                 script {
                     gv.deploy()

@@ -23,11 +23,7 @@ def test(){
 
 def deploy(){
     echo 'Deploying...'
-                // Add your deploy commands here
-                withCredentials([usernamePassword(credentialsId: 'git-hub', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-                    // Use GIT_USERNAME and GIT_PASSWORD for authentication
-                    echo "Deploying with GitHub credentials: ${GIT_USERNAME}"
-                }
+    
 }
 
 return this
