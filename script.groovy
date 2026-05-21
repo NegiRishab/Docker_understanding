@@ -23,6 +23,8 @@ def test(){
 
 def deploy(){
     echo 'Deploying...'
+    echo "Branch name is: ${env.BRANCH_NAME}"
+                // Add your deployment commands here
     
 }
 
