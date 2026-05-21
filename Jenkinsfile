@@ -48,7 +48,7 @@ pipeline {
         }
     post {
         always {
-            echo 'This will always run after the stages.'
+            echo 'This will always run after the stages.lets go s'
             // Add any cleanup or notification commands here
         }
         success {
