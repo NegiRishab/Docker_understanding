@@ -2,12 +2,23 @@ def gv
 
 pipeline {
     agent any
+    tools {
+       nodejs "nodej-22"
+    }
   
     stages {
         stage('Initialize') {
             steps {
                 script {
                     gv = load 'script.groovy'
+                }
+            }
+        }
+
+        stage('Version Increment') {
+            steps {
+                script {
+                    gv.versonIncrement()
                 }
             }
         }
@@ -44,6 +55,19 @@ pipeline {
                     gv.deploy()
                 }
             }
+            }
+
+        stage('Git Tagging') {
+            when {
+                expression {
+                    echo "Branch name is: ${env.BRANCH_NAME}"
+                    return env.BRANCH_NAME == 'main'
+                }
+            }
+            steps {
+                script {
+                 gv.gitTagging()
+                }
             }
         }
     post {
