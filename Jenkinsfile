@@ -70,6 +70,7 @@ pipeline {
                 }
             }
         }
+    }
     post {
         always {
             echo 'This will always run after the stages.lets go s'
