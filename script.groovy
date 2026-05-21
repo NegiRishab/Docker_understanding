@@ -41,7 +41,7 @@ def gitTagging(){
                     sh "git config --global user.name \"${GITHUB_USERNAME}\""
                     sh "git config --global user.email jenkins@jenkins.com"
 
-                    sh "git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/Docker_understanding.git"
+                    sh "git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/NegiRishab/Docker_understanding.git"
                     sh 'git add .'
                     sh "git commit -m 'Update version to ${env.VERSION}'"
                     sh "git push origin HEAD:${env.BRANCH_NAME}"
