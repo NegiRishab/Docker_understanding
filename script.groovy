@@ -44,7 +44,7 @@ def gitTagging(){
                     sh "git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/Docker_understanding.git"
                     sh 'git add .'
                     sh "git commit -m 'Update version to ${env.VERSION}'"
-                   sh "git push origin ${env.BRANCH_NAME}"
+                    sh "git push origin HEAD:${env.BRANCH_NAME}"
                 }
 }
 
